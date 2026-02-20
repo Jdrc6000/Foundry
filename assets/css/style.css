@@ -1,18 +1,21 @@
+html,
 body {
-    font-family: Arial, sans-serif;
+    height: 100%;
     margin: 0;
     padding: 0;
-    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    background: #1e1e1e;
-    color: #ffffff;
+    background: #222;
+    color: #fff;
     padding: 1rem;
 }
 
 header nav a {
-    color: #ffffff;
+    color: #fff;
     margin-right: 1rem;
     text-decoration: none;
 }
@@ -22,6 +25,7 @@ header nav a:hover {
 }
 
 main {
+    flex: 1;
     padding: 2rem;
     max-width: 1000px;
     margin: 0 auto;
@@ -48,10 +52,11 @@ ul {
 footer {
     text-align: center;
     padding: 1rem;
-    background: #1e1e1e;
-    color: #ffffff;
+    background: #222;
+    color: #fff;
 }
 
-h1, h2 {
+h1,
+h2 {
     margin: 0 0 1rem 0;
 }

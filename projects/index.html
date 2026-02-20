@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Projects - Foundry</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/projects.css">
 </head>
 
 <body>
@@ -20,8 +21,12 @@
     </header>
 
     <main>
-        <ul id="projects-list">
-            <!-- JS will inject project info & commits -->
+        <div class="projects-header">
+            <h2>Repos</h2>
+            <p class="projects-count" id="projects-count">Loading…</p>
+        </div>
+        <ul class="projects-list" id="projects-list">
+            <!-- JS will inject project cards here -->
         </ul>
     </main>
 
@@ -29,7 +34,7 @@
         <p>© 2026 Foundry</p>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/projects.js"></script>
 </body>
 
 </html>

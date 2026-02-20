@@ -1,0 +1,211 @@
+/* ── Projects styles ── */
+
+/* ── Header ── */
+.projects-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+.projects-header h2 {
+    margin-bottom: 0.25rem;
+}
+
+.projects-count {
+    font-size: 0.82rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+}
+
+/* ── Project Cards List ── */
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.project-card {
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border-color: #bbb;
+}
+
+/* ── Card Header Row ── */
+.project-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.project-card-title {
+    margin: 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.project-card-title a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card-title a:hover {
+    text-decoration: underline;
+}
+
+.project-repo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #f0f0f0;
+    color: #555;
+    border-radius: 4px;
+    padding: 0.2rem 0.55rem;
+}
+
+/* ── Commit List ── */
+.project-card-commits {
+    margin: 0 0 1rem 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.commit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 0.875rem;
+    color: #444;
+    line-height: 1.45;
+}
+
+.commit-item:last-child {
+    border-bottom: none;
+}
+
+.commit-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-top: 0.42em;
+    transition: background 0.2s;
+}
+
+.project-card:hover .commit-dot {
+    background: #333;
+}
+
+.commit-message {
+    flex: 1;
+    word-break: break-word;
+}
+
+.commit-date {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: #aaa;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    margin-top: 0.05em;
+}
+
+/* ── Card Footer ── */
+.project-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.project-card-meta {
+    font-size: 0.78rem;
+    color: #999;
+}
+
+.project-card-link {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 2px solid #333;
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.project-card-link:hover {
+    color: #000;
+    border-color: #000;
+}
+
+/* ── Loading / error states ── */
+.projects-loading,
+.projects-error {
+    color: #888;
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+.projects-error {
+    color: #c0392b;
+}
+
+/* ── Skeleton loader ── */
+.project-skeleton {
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+}
+
+.skeleton-line {
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    margin-bottom: 0.65rem;
+}
+
+.skeleton-line:last-child {
+    margin-bottom: 0;
+}
+
+@keyframes shimmer {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}

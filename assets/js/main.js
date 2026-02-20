@@ -22,20 +22,41 @@ if (projectsList) {
     });
 }
 
-// Photo gallery (dynamic)
+// Fully automatic GitHub-powered gallery
 const photoGrid = document.getElementById("photo-grid");
+
 if (photoGrid) {
-    const photos = ["sample.jpg", "sample.jpg", "sample.jpg"];
-    photos.forEach(filename => {
-        const img = document.createElement("img");
-        img.src = `../assets/images/${filename}`;
-        img.alt = "Photo";
-        photoGrid.appendChild(img);
-    });
+    const githubUsername = "Jdrc6000";
+    const repoName = "forge"; // change if this site is in another repo
+    const imagesPath = "assets/images";
+
+    fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)
+        .then(res => res.json())
+        .then(files => {
+            files
+                .filter(file => file.type === "file" && file.name.match(/\.(jpg|jpeg|png|webp)$/i))
+                .forEach(file => {
+                    const figure = document.createElement("figure");
+
+                    const img = document.createElement("img");
+                    img.src = file.download_url;
+                    img.alt = file.name.replace(/\.[^/.]+$/, "");
+
+                    const caption = document.createElement("figcaption");
+                    caption.textContent = file.name.replace(/\.[^/.]+$/, "");
+
+                    figure.appendChild(img);
+                    figure.appendChild(caption);
+                    photoGrid.appendChild(figure);
+                });
+        })
+        .catch(err => {
+            console.error("Failed to load images:", err);
+        });
 }
 
 // Featured project on home page
-const featuredProject = document.getElementById("forge");
+const featuredProject = document.getElementById("featured-project");
 if (featuredProject && repos.length > 0) {
     fetch(`https://api.github.com/repos/${githubUsername}/${repos[0]}/commits`)
         .then(res => res.json())

@@ -1,5 +1,5 @@
 const githubUsername = "Jdrc6000";
-const repos = ["forge"]; // Add more repos as needed
+const repos = ["forge", "foundry"]; // Add more repos as needed
 
 // Projects list
 const projectsList = document.getElementById("projects-list");
@@ -20,39 +20,6 @@ if (projectsList) {
                 projectsList.appendChild(projectItem);
             });
     });
-}
-
-// Fully automatic GitHub-powered gallery
-const photoGrid = document.getElementById("photo-grid");
-
-if (photoGrid) {
-    const githubUsername = "Jdrc6000";
-    const repoName = "foundry"; // change if this site is in another repo
-    const imagesPath = "assets/images";
-
-    fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)
-        .then(res => res.json())
-        .then(files => {
-            files
-                .filter(file => file.type === "file" && file.name.match(/\.(jpg|jpeg|png|webp)$/i))
-                .forEach(file => {
-                    const figure = document.createElement("figure");
-
-                    const img = document.createElement("img");
-                    img.src = file.download_url;
-                    img.alt = file.name.replace(/\.[^/.]+$/, "");
-
-                    const caption = document.createElement("figcaption");
-                    caption.textContent = file.name.replace(/\.[^/.]+$/, "");
-
-                    figure.appendChild(img);
-                    figure.appendChild(caption);
-                    photoGrid.appendChild(figure);
-                });
-        })
-        .catch(err => {
-            console.error("Failed to load images:", err);
-        });
 }
 
 // Featured project on home page

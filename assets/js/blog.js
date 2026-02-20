@@ -46,7 +46,7 @@ Expects a file at blog/posts/index.json in your repo:
         html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
 
         // Blockquotes
-        html = html.replace(/^&gt; (.+)$/gm, "<blockquote>$1</blockquote>");
+        html = html.replace(/<\/blockquote>\n?<blockquote>/g, "<br>");
 
         // Horizontal rules
         html = html.replace(/^(-{3,}|\*{3,})$/gm, "<hr>");
@@ -67,9 +67,7 @@ Expects a file at blog/posts/index.json in your repo:
 
         // Unordered lists (basic)
         html = html.replace(/^[\*\-] (.+)$/gm, "<li>$1</li>");
-        html = html.replace(/(<li>[\s\S]*?<\/li>)/g, "<ul>$1</ul>");
-        // Collapse adjacent ul tags
-        html = html.replace(/<\/ul>\s*<ul>/g, "");
+        html = html.replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`);
 
         // Ordered lists
         html = html.replace(/^\d+\. (.+)$/gm, "<li>$1</li>");

@@ -1,0 +1,122 @@
+/* ── About page styles ── */
+
+.about-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+.about-header h2 {
+    margin-bottom: 0.25rem;
+}
+
+.about-tagline {
+    font-size: 0.82rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+}
+
+/* Bio card */
+.about-bio-card {
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+    margin-bottom: 2rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.about-bio-card:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border-color: #bbb;
+}
+
+.about-bio-card p {
+    margin: 0;
+    font-size: 0.97rem;
+    color: #333;
+    line-height: 1.7;
+}
+
+/* Sections */
+.about-section {
+    margin-bottom: 2rem;
+}
+
+.about-section-title {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    font-weight: 600;
+    margin: 0 0 0.85rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Skills */
+.about-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.about-skill-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.about-skill-item:last-child {
+    border-bottom: none;
+}
+
+.about-skill-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ccc;
+}
+
+/* Links */
+.about-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.about-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 0.9rem;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.about-link:last-child {
+    border-bottom: none;
+}
+
+.about-link:hover {
+    color: #000;
+}
+
+.about-link svg {
+    flex-shrink: 0;
+    color: #999;
+}
+
+.about-link:hover svg {
+    color: #444;
+}

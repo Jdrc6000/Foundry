@@ -1,15 +1,21 @@
 /* ── Gallery page styles ── */
 
 .gallery-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+.gallery-header h2 {
+    margin-bottom: 0.25rem;
 }
 
 .gallery-count {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: #888;
-    margin: 0;
-    letter-spacing: 0.04em;
     text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
 }
 
 /* Grid */
@@ -23,10 +29,17 @@
     margin: 0;
     position: relative;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 8px;
     background: #111;
     cursor: pointer;
     aspect-ratio: 4 / 3;
+    border: 1px solid #e4e4e4;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.photo-grid figure:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border-color: #bbb;
 }
 
 .photo-grid figure img {
@@ -38,8 +51,8 @@
 }
 
 .photo-grid figure:hover img {
-    transform: scale(1.05);
-    filter: brightness(0.7);
+    transform: scale(1.04);
+    filter: brightness(0.72);
 }
 
 .photo-grid figcaption {
@@ -48,7 +61,7 @@
     left: 0;
     right: 0;
     padding: 0.5rem 0.75rem;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
     color: #fff;
     font-size: 0.8rem;
     opacity: 0;
@@ -225,11 +238,12 @@
 
 /* Loading skeleton */
 .photo-skeleton {
-    background: linear-gradient(90deg, #1a1a1a 25%, #242424 50%, #1a1a1a 75%);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
-    border-radius: 6px;
+    border-radius: 8px;
     aspect-ratio: 4/3;
+    border: 1px solid #e4e4e4;
 }
 
 @keyframes shimmer {
@@ -242,7 +256,7 @@
     }
 }
 
-/* Responsive: collapse meta panel on small screens */
+/* Responsive */
 @media (max-width: 680px) {
     .lightbox-inner {
         flex-direction: column;

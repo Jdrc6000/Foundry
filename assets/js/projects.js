@@ -1,8 +1,7 @@
 (function () {
     const CONFIG = window.PROJECTS_CONFIG || {};
     const githubUsername = CONFIG.username || "Jdrc6000";
-    const repos = CONFIG.repos || ["forge", "foundry"];
-    const commitsToShow = CONFIG.commits || 5;
+    const commitsToShow = CONFIG.commits || 7;
 
     const listEl = document.getElementById("projects-list");
     const countEl = document.getElementById("projects-count");
@@ -12,9 +11,20 @@
     // Helpers
     function formatDate(dateStr) {
         const d = new Date(dateStr);
-        return d.toLocaleDateString(undefined, {
-            year: "numeric", month: "short", day: "numeric"
+
+        const date = d.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
         });
+
+        const time = d.toLocaleTimeString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        });
+
+        return `${date} · ${time}`;
     }
 
     function repoUrl(repo) {
@@ -22,9 +32,9 @@
     }
 
     // Skeletons
-    function showSkeletons() {
+    function showSkeletons(n = 3) {
         listEl.innerHTML = "";
-        repos.forEach(() => {
+        for (let i = 0; i < n; i++) {
             const li = document.createElement("li");
             li.className = "project-skeleton";
             li.innerHTML = `
@@ -35,7 +45,7 @@
                 <div class="skeleton-line" style="width:60%;height:0.85rem;"></div>
             `;
             listEl.appendChild(li);
-        });
+        }
     }
 
     // Card renderer
@@ -98,41 +108,60 @@
             .replace(/"/g, "&quot;");
     }
 
-    // Fetch + render
+    // Fetch repos, then commits
     showSkeletons();
 
-    const requests = repos.map(repo =>
-        fetch(`https://api.github.com/repos/${githubUsername}/${repo}/commits?per_page=${commitsToShow}`)
-            .then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                return r.json();
-            })
-            .then(commits => ({ repo, commits, error: null }))
-            .catch(err => ({ repo, commits: [], error: err }))
-    );
-
-    Promise.all(requests).then(results => {
-        listEl.innerHTML = "";
-
-        const loaded = results.filter(r => !r.error).length;
-        if (countEl) {
-            countEl.textContent = `${repos.length} repo${repos.length !== 1 ? "s" : ""}`;
-        }
-
-        results.forEach(({ repo, commits, error }) => {
-            if (error) {
-                const li = document.createElement("li");
-                li.className = "project-card";
-                li.innerHTML = `
-                    <div class="project-card-header">
-                        <h3 class="project-card-title">${repo}</h3>
-                    </div>
-                    <p class="projects-error">Could not load commits for <strong>${repo}</strong>.</p>
-                `;
-                listEl.appendChild(li);
-            } else {
-                listEl.appendChild(buildCard(repo, commits));
+    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=pushed&per_page=100`)
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        })
+        .then(repos => {
+            if (!Array.isArray(repos) || repos.length === 0) {
+                listEl.innerHTML = '<p class="projects-error">No public repositories found.</p>';
+                if (countEl) countEl.textContent = "0 repos";
+                return;
             }
+
+            if (countEl) {
+                countEl.textContent = `${repos.length} repo${repos.length !== 1 ? "s" : ""}`;
+            }
+
+            // Show correct number of skeletons now we know the count
+            showSkeletons(repos.length);
+
+            const requests = repos.map(repo =>
+                fetch(`https://api.github.com/repos/${githubUsername}/${repo.name}/commits?per_page=${commitsToShow}`)
+                    .then(r => {
+                        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                        return r.json();
+                    })
+                    .then(commits => ({ repo: repo.name, commits, error: null }))
+                    .catch(err => ({ repo: repo.name, commits: [], error: err }))
+            );
+
+            Promise.all(requests).then(results => {
+                listEl.innerHTML = "";
+                results.forEach(({ repo, commits, error }) => {
+                    if (error) {
+                        const li = document.createElement("li");
+                        li.className = "project-card";
+                        li.innerHTML = `
+                            <div class="project-card-header">
+                                <h3 class="project-card-title">${repo}</h3>
+                            </div>
+                            <p class="projects-error">Could not load commits for <strong>${repo}</strong>.</p>
+                        `;
+                        listEl.appendChild(li);
+                    } else {
+                        listEl.appendChild(buildCard(repo, commits));
+                    }
+                });
+            });
+        })
+        .catch(err => {
+            console.error("Projects: failed to fetch repos", err);
+            listEl.innerHTML = '<p class="projects-error">Could not load repositories. Check the username or try again later.</p>';
+            if (countEl) countEl.textContent = "";
         });
-    });
 })();

@@ -28,7 +28,7 @@
         return filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
     }
 
-    // ── Skeleton grid ─────────────────────────────────────────────────────────
+    // Skeleton grid
     function showSkeletons(n = 8) {
         photoGrid.innerHTML = "";
         for (let i = 0; i < n; i++) {
@@ -40,7 +40,7 @@
         }
     }
 
-    // ── Build grid ────────────────────────────────────────────────────────────
+    // Build grid
     function buildGrid(files) {
         photoGrid.innerHTML = "";
         items = files;
@@ -121,7 +121,7 @@
             if (countEl) countEl.textContent = "";
         });
 
-    // ── Lightbox ──────────────────────────────────────────────────────────────
+    // Lightbox
     function openLightbox(index) {
         current = index;
         renderLightbox();
@@ -204,7 +204,7 @@
             .catch(() => { });
     }
 
-    // ── Controls ──────────────────────────────────────────────────────────────
+    // Controls
     lbClose.addEventListener("click", closeLightbox);
     lbPrev.addEventListener("click", () => navigate(-1));
     lbNext.addEventListener("click", () => navigate(+1));

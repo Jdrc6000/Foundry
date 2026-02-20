@@ -1,0 +1,143 @@
+/* ── Contact page styles ── */
+
+.contact-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+}
+
+.contact-header h2 {
+    margin-bottom: 0.25rem;
+}
+
+.contact-tagline {
+    font-size: 0.82rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+}
+
+/* Card */
+.contact-card {
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem;
+    background: #fff;
+    max-width: 560px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-card:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border-color: #bbb;
+}
+
+/* Fields */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-field label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #666;
+}
+
+.form-field input,
+.form-field textarea {
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: #222;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.6rem 0.85rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    resize: vertical;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #bbb;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    border-color: #888;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Actions */
+.form-actions {
+    margin-top: 0.5rem;
+}
+
+button[type="submit"] {
+    position: relative;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    border: 1.5px solid #222;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+    overflow: hidden;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background: #000;
+    border-color: #000;
+}
+
+button[type="submit"]:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-sending {
+    display: none;
+}
+
+button[type="submit"].is-sending .btn-text {
+    display: none;
+}
+
+button[type="submit"].is-sending .btn-sending {
+    display: inline;
+}
+
+/* Status message */
+.form-status {
+    margin: 1rem 0 0 0;
+    font-size: 0.88rem;
+    min-height: 1.2em;
+    color: #555;
+    border-radius: 5px;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.form-status.success {
+    color: #2a7a2a;
+}
+
+.form-status.error {
+    color: #c0392b;
+}
+
+@media (max-width: 600px) {
+    .contact-card {
+        padding: 1.25rem 1rem;
+    }
+}

@@ -27,7 +27,7 @@ const photoGrid = document.getElementById("photo-grid");
 
 if (photoGrid) {
     const githubUsername = "Jdrc6000";
-    const repoName = "forge"; // change if this site is in another repo
+    const repoName = "foundry"; // change if this site is in another repo
     const imagesPath = "assets/images";
 
     fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)

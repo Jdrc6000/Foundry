@@ -168,6 +168,26 @@
     border-color: #000;
 }
 
+/* ── Language breakdown ── */
+.project-card-langs {
+    margin-top: 0.65rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid #f2f2f2;
+    min-height: 1.2em;
+}
+
+.project-langs {
+    font-size: 0.75rem;
+    color: #999;
+    letter-spacing: 0.01em;
+}
+
+.project-langs-loading {
+    font-size: 0.75rem;
+    color: #ccc;
+    font-style: italic;
+}
+
 /* ── Loading / error states ── */
 .projects-loading,
 .projects-error {

@@ -33,6 +33,30 @@
             .replace(/"/g, "&quot;");
     }
 
+    function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    function estimateLOC(totalBytes) {
+        const loc = Math.round(totalBytes / 50);
+        if (loc >= 1000) return `~${(loc / 1000).toFixed(1)}k LOC`;
+        return `~${loc} LOC`;
+    }
+
+    // "Python 72% · Lua 28%  ·  4.2 KB · ~420 LOC"
+    function buildLangString(langs) {
+        const entries = Object.entries(langs);
+        if (entries.length === 0) return null;
+        const total = entries.reduce((s, [, v]) => s + v, 0);
+        const breakdown = entries
+            .sort((a, b) => b[1] - a[1])
+            .map(([lang, bytes]) => `${lang} ${Math.round((bytes / total) * 100)}%`)
+            .join(" · ");
+        return `${breakdown} &nbsp;·&nbsp; ${formatBytes(total)} · ${estimateLOC(total)}`;
+    }
+
     // Polished skeleton loader
     function showSkeletons(n = 3) {
         listEl.innerHTML = "";
@@ -117,8 +141,28 @@
                 ${latestDate ? `<span class="project-card-meta">Last updated ${latestDate}</span>` : '<span></span>'}
                 <a class="project-card-link" href="${repoUrl(repo)}" target="_blank" rel="noopener">View on GitHub →</a>
             </div>
+            <div class="project-card-langs" id="langs-${repo}">
+                <span class="project-langs-loading">Loading languages…</span>
+            </div>
         `;
         return li;
+    }
+
+    // Inject language info into a rendered card
+    function injectLangs(repo, langs) {
+        const el = document.getElementById(`langs-${repo}`);
+        if (!el) return;
+        const str = buildLangString(langs);
+        if (!str) {
+            el.remove();
+            return;
+        }
+        el.innerHTML = `<span class="project-langs">${str}</span>`;
+        el.style.opacity = "0";
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.style.transition = "opacity 0.3s ease";
+            el.style.opacity = "1";
+        }));
     }
 
     // Fetch
@@ -142,7 +186,7 @@
 
             showSkeletons(repos.length);
 
-            const requests = repos.map(repo =>
+            const commitRequests = repos.map(repo =>
                 fetch(`${PROXY}/repos/${githubUsername}/${repo.name}/commits?per_page=${commitsToShow}`)
                     .then(r => {
                         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -152,7 +196,7 @@
                     .catch(err => ({ repo: repo.name, commits: [], error: err }))
             );
 
-            Promise.all(requests).then(results => {
+            Promise.all(commitRequests).then(results => {
                 listEl.innerHTML = "";
                 results.forEach(({ repo, commits, error }, i) => {
                     let card;
@@ -179,6 +223,16 @@
                             card.style.transform = "translateY(0)";
                         });
                     });
+
+                    if (!error) {
+                        fetch(`${PROXY}/repos/${githubUsername}/${repo}/languages`)
+                            .then(r => r.ok ? r.json() : {})
+                            .then(langs => injectLangs(repo, langs))
+                            .catch(() => {
+                                const el = document.getElementById(`langs-${repo}`);
+                                if (el) el.remove();
+                            });
+                    }
                 });
             });
         })

@@ -1,5 +1,5 @@
 /*
-Expects a file at blog/posts/index.json in your repo:
+Expects a file at blog/posts/index.json in my repo:
 [
     {
     "slug": "my-first-post",
@@ -20,7 +20,7 @@ Expects a file at blog/posts/index.json in your repo:
     const raw = (path) =>
         `https://raw.githubusercontent.com/${githubUsername}/${repoName}/${branch}/${path}`;
 
-    // ── Tiny Markdown → HTML renderer ────────────────────────────────────────
+    // Tiny Markdown → HTML renderer
     function parseMarkdown(md) {
         let html = md
             .replace(/&/g, "&amp;")
@@ -66,7 +66,7 @@ Expects a file at blog/posts/index.json in your repo:
         });
     }
 
-    // ── Skeleton loader ───────────────────────────────────────────────────────
+    // Skeleton loader
     function showBlogSkeletons(container, n = 4) {
         container.innerHTML = "";
         const excerptWidths = [
@@ -95,7 +95,7 @@ Expects a file at blog/posts/index.json in your repo:
         }
     }
 
-    // ── Blog listing page ─────────────────────────────────────────────────────
+    // Blog listing page
     const listEl = document.getElementById("posts-list");
     const countEl = document.getElementById("blog-count");
 
@@ -149,7 +149,7 @@ Expects a file at blog/posts/index.json in your repo:
             });
     }
 
-    // ── Post reader page ──────────────────────────────────────────────────────
+    // Post reader page
     const postContainer = document.getElementById("post-container");
 
     if (postContainer) {
@@ -201,6 +201,8 @@ Expects a file at blog/posts/index.json in your repo:
                         .join("");
 
                     postContainer.style.opacity = "0";
+
+                    const parsedMarkdown = parseMarkdown(md)
                     postContainer.innerHTML = `
                         <a class="post-back" href="index.html">← Back to Blog</a>
                         <div class="post-header">
@@ -210,8 +212,10 @@ Expects a file at blog/posts/index.json in your repo:
                                 ${tagsHtml ? `<span class="post-tags">${tagsHtml}</span>` : ""}
                             </div>
                         </div>
-                        <div class="post-body">${parseMarkdown(md)}</div>
+                        <div class="post-body">${parsedMarkdown}</div>
                     `;
+                    console.log(parseMarkdown)
+
                     requestAnimationFrame(() => requestAnimationFrame(() => {
                         postContainer.style.transition = "opacity 0.35s ease";
                         postContainer.style.opacity = "1";

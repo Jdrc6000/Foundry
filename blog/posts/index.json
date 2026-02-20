@@ -1,0 +1,12 @@
+[
+    {
+        "slug": "hello-world",
+        "title": "Hello, World",
+        "date": "2026-02-20",
+        "tags": [
+            "general",
+            "programming"
+        ],
+        "excerpt": "A quick introduction to Foundry — what it is, why I built it, and what I plan to write about here."
+    }
+]

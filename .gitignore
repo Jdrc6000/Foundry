@@ -5,3 +5,4 @@ __pycache__/
 .env/
 __init__.py
 .DS_Store
+vibe-coded.txt

@@ -6,19 +6,25 @@ body {
 }
 
 header {
-    background: #222;
-    color: #fff;
+    background: #1e1e1e;
+    color: #ffffff;
     padding: 1rem;
 }
 
 header nav a {
-    color: #fff;
+    color: #ffffff;
     margin-right: 1rem;
     text-decoration: none;
 }
 
+header nav a:hover {
+    text-decoration: underline;
+}
+
 main {
     padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 ul {
@@ -36,11 +42,16 @@ ul {
     width: 100%;
     height: auto;
     border-radius: 4px;
+    object-fit: cover;
 }
 
 footer {
     text-align: center;
     padding: 1rem;
-    background: #222;
-    color: #fff;
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+h1, h2 {
+    margin: 0 0 1rem 0;
 }

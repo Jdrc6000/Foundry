@@ -8,7 +8,7 @@ full = ""
 total_loc = 0
 total_code_loc = 0 # uses content_text instead of filtered_content
 
-included_extensions = (".py", ".html", ".css", ".js", ".jpg")
+included_extensions = (".py", ".html", ".css", ".js")
 
 for file_path in sorted(main_path.rglob("*")):  # get all files
     if file_path.suffix.lower() not in included_extensions:

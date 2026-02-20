@@ -3,6 +3,8 @@
     const githubUsername = CONFIG.username || "Jdrc6000";
     const commitsToShow = CONFIG.commits || 7;
 
+    const PROXY = "https://foundry-proxy.joshuadanielcarter.workers.dev";
+
     const listEl = document.getElementById("projects-list");
     const countEl = document.getElementById("projects-count");
 
@@ -31,10 +33,9 @@
             .replace(/"/g, "&quot;");
     }
 
-    // ── Polished skeleton loader ──────────────────────────────────────────────
+    // Polished skeleton loader
     function showSkeletons(n = 3) {
         listEl.innerHTML = "";
-        // Vary widths so skeletons look natural, not copy-pasted
         const patterns = [
             ["55%", "88%", "72%", "80%", "65%"],
             ["42%", "91%", "78%", "84%", "70%"],
@@ -68,11 +69,10 @@
         }
     }
 
-    // ── Card renderer ─────────────────────────────────────────────────────────
+    // Card renderer
     function buildCard(repo, commits) {
         const li = document.createElement("li");
         li.className = "project-card";
-        li.style.animationDelay = "0ms";
 
         const latestDate = commits.length
             ? formatDate(commits[0].commit.author.date)
@@ -121,10 +121,10 @@
         return li;
     }
 
-    // ── Fetch ─────────────────────────────────────────────────────────────────
+    // Fetch
     showSkeletons();
 
-    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=pushed&per_page=100`)
+    fetch(`${PROXY}/users/${githubUsername}/repos?sort=pushed&per_page=100`)
         .then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.json();
@@ -143,7 +143,7 @@
             showSkeletons(repos.length);
 
             const requests = repos.map(repo =>
-                fetch(`https://api.github.com/repos/${githubUsername}/${repo.name}/commits?per_page=${commitsToShow}`)
+                fetch(`${PROXY}/repos/${githubUsername}/${repo.name}/commits?per_page=${commitsToShow}`)
                     .then(r => {
                         if (!r.ok) throw new Error(`HTTP ${r.status}`);
                         return r.json();
@@ -169,12 +169,10 @@
                     } else {
                         card = buildCard(repo, commits);
                     }
-                    // Stagger the fade-in of loaded cards
                     card.style.opacity = "0";
                     card.style.transform = "translateY(8px)";
                     card.style.transition = `opacity 0.3s ease ${i * 40}ms, transform 0.3s ease ${i * 40}ms`;
                     listEl.appendChild(card);
-                    // Trigger reflow then animate in
                     requestAnimationFrame(() => {
                         requestAnimationFrame(() => {
                             card.style.opacity = "1";

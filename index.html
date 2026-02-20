@@ -12,17 +12,25 @@
     <header>
         <h1>Foundry</h1>
         <nav>
-            <a href="index.html">Home</a>
+            <a href="index.html" class="nav-active">Home</a>
             <a href="projects/index.html">Projects</a>
             <a href="blog/index.html">Blog</a>
             <a href="gallery/index.html">Gallery</a>
             <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
         </nav>
     </header>
 
     <main>
-        <h2 class="home-hero-title">A hub for projects,<br>writing, and photography.</h2>
-        <p class="home-hero-sub">Built by Josh — programmer and photographer.</p>
+        <!-- Fixed: was missing the home-hero wrapper div, so hero padding/border styles weren't applying -->
+        <div class="home-hero">
+            <h2 class="home-hero-title">A hub for projects,<br>writing, and photography.</h2>
+            <p class="home-hero-sub">Built by Josh — programmer and photographer.</p>
+            <div class="home-hero-links">
+                <a class="home-hero-btn" href="projects/index.html">Browse Projects</a>
+                <a class="home-hero-btn home-hero-btn--outline" href="about.html">About Me</a>
+            </div>
+        </div>
 
         <div class="home-sections">
             <div class="home-section-card">

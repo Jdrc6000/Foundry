@@ -3,7 +3,8 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    /* Improved: replaced bare Arial with a proper stack that degrades gracefully */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     display: flex;
     flex-direction: column;
 }
@@ -12,22 +13,55 @@ header {
     background: #222;
     color: #fff;
     padding: 1rem;
+    /* Improved: flex layout so title + nav sit on one row and wrap cleanly */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
 }
 
 header nav a {
-    color: #fff;
-    margin-right: 1rem;
+    color: #ccc;
     text-decoration: none;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    transition: color 0.15s, background 0.15s;
 }
 
 header nav a:hover {
-    text-decoration: underline;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+}
+
+/* Active page indicator */
+header nav a.nav-active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.13);
+    font-weight: 600;
 }
 
 main {
     flex: 1;
     padding: 2rem;
     max-width: 1000px;
+    width: 100%;
+    /* Improved: use margin auto instead of just margin:0 auto so padding is included */
+    box-sizing: border-box;
     margin: 0 auto;
 }
 
@@ -53,10 +87,17 @@ footer {
     text-align: center;
     padding: 1rem;
     background: #222;
-    color: #fff;
+    color: #888;
+    font-size: 0.82rem;
 }
 
+/* Improved: removed blanket h1,h2 bottom-margin that was fighting page-specific styles.
+   Each page's own CSS now controls heading spacing contextually. */
 h1,
-h2 {
-    margin: 0 0 1rem 0;
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
 }

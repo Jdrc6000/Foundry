@@ -1,13 +1,3 @@
-/**
- * gallery.js — Enhanced gallery with lightbox + metadata
- *
- * Reads images loaded by main.js into #photo-grid and wires up:
- *  - Click to open full-size lightbox
- *  - Prev / Next navigation (buttons + keyboard arrows)
- *  - Escape to close
- *  - EXIF-style metadata from GitHub API response (size, filename, date via commit)
- */
-
 (function () {
     const githubUsername = "Jdrc6000";
     const repoName = "foundry";
@@ -28,7 +18,7 @@
     let items = [];   // { src, name, size, sha, download_url }
     let current = 0;
 
-    // ── 1. Fetch image list from GitHub ──────────────────────────────────────
+    // 1. Fetch image list from GitHub
     function formatBytes(bytes) {
         if (bytes < 1024) return bytes + " B";
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
@@ -84,7 +74,7 @@
 
     showSkeletons();
 
-    fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)
+    fetch(`https://foundry-proxy.joshuadanielcarter.workers.dev/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)
         .then(res => res.json())
         .then(files => {
             const images = Array.isArray(files)
@@ -104,7 +94,7 @@
             photoGrid.innerHTML = "<p style='color:#888;grid-column:1/-1'>Could not load images.</p>";
         });
 
-    // ── 2. Lightbox ───────────────────────────────────────────────────────────
+    // 2. Lightbox
     function openLightbox(index) {
         current = index;
         renderLightbox();
@@ -159,7 +149,7 @@
 
     function fetchCommitDate(filePath) {
         if (!filePath) return;
-        fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/commits?path=${encodeURIComponent(filePath)}&per_page=1`)
+        fetch(`https://foundry-proxy.joshuadanielcarter.workers.dev/repos/${githubUsername}/${repoName}/commits?path=${encodeURIComponent(filePath)}&per_page=1`)
             .then(r => r.json())
             .then(commits => {
                 if (!Array.isArray(commits) || commits.length === 0) return;
@@ -185,7 +175,7 @@
             .catch(() => { }); // silently ignore rate-limit / errors
     }
 
-    // ── 3. Controls ───────────────────────────────────────────────────────────
+    // 3. Controls
     lbClose.addEventListener("click", closeLightbox);
     lbPrev.addEventListener("click", () => navigate(-1));
     lbNext.addEventListener("click", () => navigate(+1));

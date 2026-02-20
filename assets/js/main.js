@@ -4,7 +4,7 @@ const githubUsername = "Jdrc6000";
 const featuredProject = document.getElementById("featured-project");
 
 if (featuredProject) {
-    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=pushed&per_page=1`)
+    fetch(`https://foundry-proxy.joshuadanielcarter.workers.dev/users/${githubUsername}/repos?sort=pushed&per_page=1`)
         .then(res => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
@@ -12,7 +12,7 @@ if (featuredProject) {
         .then(repos => {
             if (!Array.isArray(repos) || repos.length === 0) throw new Error("No repos found");
             const repo = repos[0];
-            return fetch(`https://api.github.com/repos/${githubUsername}/${repo.name}/commits?per_page=1`)
+            return fetch(`https://foundry-proxy.joshuadanielcarter.workers.dev/repos/${githubUsername}/${repo.name}/commits?per_page=1`)
                 .then(res => {
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     return res.json();

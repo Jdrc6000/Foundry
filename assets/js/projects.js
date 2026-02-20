@@ -8,22 +8,14 @@
 
     if (!listEl) return;
 
-    // Helpers
     function formatDate(dateStr) {
         const d = new Date(dateStr);
-
         const date = d.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
+            year: "numeric", month: "short", day: "numeric"
         });
-
         const time = d.toLocaleTimeString(undefined, {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
+            hour: "2-digit", minute: "2-digit", hour12: true
         });
-
         return `${date} · ${time}`;
     }
 
@@ -31,34 +23,63 @@
         return `https://github.com/${githubUsername}/${repo}`;
     }
 
-    // Skeletons
+    function escapeHtml(str) {
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+
+    // ── Polished skeleton loader ──────────────────────────────────────────────
     function showSkeletons(n = 3) {
         listEl.innerHTML = "";
+        // Vary widths so skeletons look natural, not copy-pasted
+        const patterns = [
+            ["55%", "88%", "72%", "80%", "65%"],
+            ["42%", "91%", "78%", "84%", "70%"],
+            ["60%", "76%", "93%", "68%", "82%"],
+        ];
         for (let i = 0; i < n; i++) {
+            const pat = patterns[i % patterns.length];
             const li = document.createElement("li");
             li.className = "project-skeleton";
+            li.style.animationDelay = `${i * 80}ms`;
             li.innerHTML = `
-                <div class="skeleton-line" style="width:40%;height:1.2rem;"></div>
-                <div class="skeleton-line" style="width:90%;height:0.85rem;margin-top:1rem;"></div>
-                <div class="skeleton-line" style="width:80%;height:0.85rem;"></div>
-                <div class="skeleton-line" style="width:85%;height:0.85rem;"></div>
-                <div class="skeleton-line" style="width:60%;height:0.85rem;"></div>
+                <div class="project-skeleton-header">
+                    <div class="sk-line sk-title" style="width:${pat[0]}"></div>
+                    <div class="sk-badge"></div>
+                </div>
+                <div class="project-skeleton-commits">
+                    ${pat.slice(1).map((w, j) => `
+                        <div class="sk-commit" style="animation-delay:${(i * 5 + j) * 60}ms">
+                            <div class="sk-dot"></div>
+                            <div class="sk-line" style="width:${w}"></div>
+                            <div class="sk-line sk-date"></div>
+                        </div>
+                    `).join("")}
+                </div>
+                <div class="project-skeleton-footer">
+                    <div class="sk-line" style="width:140px;height:0.7rem;"></div>
+                    <div class="sk-line" style="width:120px;height:0.7rem;"></div>
+                </div>
             `;
             listEl.appendChild(li);
         }
     }
 
-    // Card renderer
+    // ── Card renderer ─────────────────────────────────────────────────────────
     function buildCard(repo, commits) {
         const li = document.createElement("li");
         li.className = "project-card";
+        li.style.animationDelay = "0ms";
 
         const latestDate = commits.length
             ? formatDate(commits[0].commit.author.date)
             : null;
 
         const commitsHtml = commits.slice(0, commitsToShow).map(c => {
-            const msg = c.commit.message.split("\n")[0]; // first line only
+            const msg = c.commit.message.split("\n")[0];
             const date = formatDate(c.commit.author.date);
             return `
                 <li class="commit-item">
@@ -100,15 +121,7 @@
         return li;
     }
 
-    function escapeHtml(str) {
-        return str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
-    }
-
-    // Fetch repos, then commits
+    // ── Fetch ─────────────────────────────────────────────────────────────────
     showSkeletons();
 
     fetch(`https://api.github.com/users/${githubUsername}/repos?sort=pushed&per_page=100`)
@@ -127,7 +140,6 @@
                 countEl.textContent = `${repos.length} repo${repos.length !== 1 ? "s" : ""}`;
             }
 
-            // Show correct number of skeletons now we know the count
             showSkeletons(repos.length);
 
             const requests = repos.map(repo =>
@@ -142,7 +154,8 @@
 
             Promise.all(requests).then(results => {
                 listEl.innerHTML = "";
-                results.forEach(({ repo, commits, error }) => {
+                results.forEach(({ repo, commits, error }, i) => {
+                    let card;
                     if (error) {
                         const li = document.createElement("li");
                         li.className = "project-card";
@@ -152,10 +165,22 @@
                             </div>
                             <p class="projects-error">Could not load commits for <strong>${repo}</strong>.</p>
                         `;
-                        listEl.appendChild(li);
+                        card = li;
                     } else {
-                        listEl.appendChild(buildCard(repo, commits));
+                        card = buildCard(repo, commits);
                     }
+                    // Stagger the fade-in of loaded cards
+                    card.style.opacity = "0";
+                    card.style.transform = "translateY(8px)";
+                    card.style.transition = `opacity 0.3s ease ${i * 40}ms, transform 0.3s ease ${i * 40}ms`;
+                    listEl.appendChild(card);
+                    // Trigger reflow then animate in
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            card.style.opacity = "1";
+                            card.style.transform = "translateY(0)";
+                        });
+                    });
                 });
             });
         })

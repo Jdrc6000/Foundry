@@ -15,10 +15,9 @@
 
     if (!lightbox || !photoGrid) return;
 
-    let items = [];   // { src, name, size, sha, download_url }
+    let items = [];
     let current = 0;
 
-    // 1. Fetch image list from GitHub
     function formatBytes(bytes) {
         if (bytes < 1024) return bytes + " B";
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
@@ -29,8 +28,20 @@
         return filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
     }
 
+    // ── Skeleton grid ─────────────────────────────────────────────────────────
+    function showSkeletons(n = 8) {
+        photoGrid.innerHTML = "";
+        for (let i = 0; i < n; i++) {
+            const div = document.createElement("div");
+            div.className = "photo-skeleton";
+            // Stagger each skeleton's shimmer phase so it doesn't look like a wall of uniform flashing
+            div.style.animationDelay = `${(i % 4) * -0.35}s`;
+            photoGrid.appendChild(div);
+        }
+    }
+
+    // ── Build grid ────────────────────────────────────────────────────────────
     function buildGrid(files) {
-        // Clear any existing content / skeletons
         photoGrid.innerHTML = "";
         items = files;
 
@@ -44,6 +55,10 @@
             figure.setAttribute("role", "button");
             figure.setAttribute("aria-label", `View ${formatName(file.name)}`);
 
+            // Start hidden for staggered reveal
+            figure.style.opacity = "0";
+            figure.style.transform = "scale(0.97)";
+
             const img = document.createElement("img");
             img.src = file.download_url;
             img.alt = formatName(file.name);
@@ -56,6 +71,25 @@
             figure.appendChild(caption);
             photoGrid.appendChild(figure);
 
+            // Staggered fade-in: wait for image to load, then animate
+            const delay = index * 50;
+            img.addEventListener("load", () => {
+                setTimeout(() => {
+                    figure.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+                    figure.style.opacity = "1";
+                    figure.style.transform = "scale(1)";
+                }, delay);
+            });
+
+            // If image fails to load still reveal the figure
+            img.addEventListener("error", () => {
+                setTimeout(() => {
+                    figure.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+                    figure.style.opacity = "1";
+                    figure.style.transform = "scale(1)";
+                }, delay);
+            });
+
             figure.addEventListener("click", () => openLightbox(index));
             figure.addEventListener("keydown", (e) => {
                 if (e.key === "Enter" || e.key === " ") openLightbox(index);
@@ -63,16 +97,8 @@
         });
     }
 
-    // Show skeleton placeholders while loading
-    function showSkeletons(n = 8) {
-        for (let i = 0; i < n; i++) {
-            const div = document.createElement("div");
-            div.className = "photo-skeleton";
-            photoGrid.appendChild(div);
-        }
-    }
-
     showSkeletons();
+    if (countEl) countEl.textContent = "Loading…";
 
     fetch(`https://foundry-proxy.joshuadanielcarter.workers.dev/repos/${githubUsername}/${repoName}/contents/${imagesPath}`)
         .then(res => res.json())
@@ -92,9 +118,10 @@
         .catch(err => {
             console.error("Gallery: failed to load images", err);
             photoGrid.innerHTML = "<p style='color:#888;grid-column:1/-1'>Could not load images.</p>";
+            if (countEl) countEl.textContent = "";
         });
 
-    // 2. Lightbox
+    // ── Lightbox ──────────────────────────────────────────────────────────────
     function openLightbox(index) {
         current = index;
         renderLightbox();
@@ -117,18 +144,17 @@
         const file = items[current];
         if (!file) return;
 
-        // Fade transition
         lbImg.style.opacity = "0";
-
-        lbImg.onload = () => { lbImg.style.opacity = "1"; };
+        lbImg.onload = () => {
+            lbImg.style.transition = "opacity 0.25s ease";
+            lbImg.style.opacity = "1";
+        };
         lbImg.src = file.download_url;
         lbImg.alt = formatName(file.name);
 
         lbTitle.textContent = formatName(file.name);
 
-        // Build metadata
         const ext = (file.name.match(/\.([^.]+)$/) || [])[1]?.toUpperCase() || "—";
-
         const metaItems = [
             { label: "Filename", value: file.name },
             { label: "Format", value: ext },
@@ -143,7 +169,6 @@
             </div>
         `).join("");
 
-        // Optionally fetch last-commit date for this file (async, non-blocking)
         fetchCommitDate(file.path);
     }
 
@@ -157,7 +182,6 @@
                 const formatted = date.toLocaleDateString(undefined, {
                     year: "numeric", month: "long", day: "numeric"
                 });
-                // Append date to meta panel if lightbox is still showing same file
                 const existing = lbMeta.querySelector("[data-meta-date]");
                 if (existing) {
                     existing.querySelector(".lb-meta-value").textContent = formatted;
@@ -165,27 +189,30 @@
                     const div = document.createElement("div");
                     div.className = "lb-meta-item";
                     div.dataset.metaDate = "1";
+                    div.style.opacity = "0";
                     div.innerHTML = `
                         <span class="lb-meta-label">Added</span>
                         <span class="lb-meta-value">${formatted}</span>
                     `;
                     lbMeta.appendChild(div);
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        div.style.transition = "opacity 0.3s ease";
+                        div.style.opacity = "1";
+                    }));
                 }
             })
-            .catch(() => { }); // silently ignore rate-limit / errors
+            .catch(() => { });
     }
 
-    // 3. Controls
+    // ── Controls ──────────────────────────────────────────────────────────────
     lbClose.addEventListener("click", closeLightbox);
     lbPrev.addEventListener("click", () => navigate(-1));
     lbNext.addEventListener("click", () => navigate(+1));
 
-    // Click backdrop to close
     lightbox.addEventListener("click", (e) => {
         if (e.target === lightbox) closeLightbox();
     });
 
-    // Keyboard
     document.addEventListener("keydown", (e) => {
         if (!lightbox.classList.contains("open")) return;
         if (e.key === "Escape") closeLightbox();
@@ -193,7 +220,6 @@
         if (e.key === "ArrowRight") navigate(+1);
     });
 
-    // Touch swipe
     let touchStartX = null;
     lightbox.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
     lightbox.addEventListener("touchend", (e) => {

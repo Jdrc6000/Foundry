@@ -35,7 +35,7 @@ if (photoGrid) {
 }
 
 // Featured project on home page
-const featuredProject = document.getElementById("featured-project");
+const featuredProject = document.getElementById("forge");
 if (featuredProject && repos.length > 0) {
     fetch(`https://api.github.com/repos/${githubUsername}/${repos[0]}/commits`)
         .then(res => res.json())

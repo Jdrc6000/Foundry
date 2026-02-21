@@ -7,3 +7,4 @@ __init__.py
 .DS_Store
 vibe-coded.txt
 README-private.md
+build_posts_private.py

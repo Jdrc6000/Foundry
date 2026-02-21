@@ -20,45 +20,6 @@ Expects a file at blog/posts/index.json in my repo:
     const raw = (path) =>
         `https://raw.githubusercontent.com/${githubUsername}/${repoName}/${branch}/${path}`;
 
-    // Tiny Markdown → HTML renderer
-    function parseMarkdown(md) {
-        let html = md
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-
-        html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-            `<pre><code class="lang-${lang}">${code.trim()}</code></pre>`
-        );
-        html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
-        html = html.replace(/^###### (.+)$/gm, "<h6>$1</h6>");
-        html = html.replace(/^##### (.+)$/gm, "<h5>$1</h5>");
-        html = html.replace(/^#### (.+)$/gm, "<h4>$1</h4>");
-        html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
-        html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
-        html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
-        html = html.replace(/<\/blockquote>\n?<blockquote>/g, "<br>");
-        html = html.replace(/^(-{3,}|\*{3,})$/gm, "<hr>");
-        html = html.replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>");
-        html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-        html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
-        html = html.replace(/_(.+?)_/g, "<em>$1</em>");
-        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
-        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-        html = html.replace(/^[\*\-] (.+)$/gm, "<li>$1</li>");
-        html = html.replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`);
-        html = html.replace(/^\d+\. (.+)$/gm, "<li>$1</li>");
-        html = html.split(/\n{2,}/).map(block => {
-            block = block.trim();
-            if (!block) return "";
-            const blockTags = /^<(h[1-6]|ul|ol|li|pre|blockquote|hr|img)/;
-            if (blockTags.test(block)) return block;
-            return `<p>${block.replace(/\n/g, "<br>")}</p>`;
-        }).join("\n");
-
-        return html;
-    }
-
     function formatDate(dateStr) {
         const d = new Date(dateStr + "T12:00:00");
         return d.toLocaleDateString(undefined, {
@@ -187,22 +148,20 @@ Expects a file at blog/posts/index.json in my repo:
                 .then(r => r.json())
                 .then(posts => {
                     const meta = posts.find(p => p.slug === slug);
-                    return fetch(raw(`${postsPath}/${slug}.md`))
+                    return fetch(raw(`${postsPath}/${slug}.html`))
                         .then(r => {
                             if (!r.ok) throw new Error(`HTTP ${r.status}`);
                             return r.text();
                         })
-                        .then(md => ({ md, meta }));
+                        .then(html => ({ html, meta }));
                 })
-                .then(({ md, meta }) => {
+                .then(({ html, meta }) => {
                     if (meta) document.title = `${meta.title} — Foundry`;
                     const tagsHtml = (meta?.tags || [])
                         .map(t => `<span class="tag">${t}</span>`)
                         .join("");
 
                     postContainer.style.opacity = "0";
-
-                    const parsedMarkdown = parseMarkdown(md)
                     postContainer.innerHTML = `
                         <a class="post-back" href="index.html">← Back to Blog</a>
                         <div class="post-header">
@@ -212,10 +171,8 @@ Expects a file at blog/posts/index.json in my repo:
                                 ${tagsHtml ? `<span class="post-tags">${tagsHtml}</span>` : ""}
                             </div>
                         </div>
-                        <div class="post-body">${parsedMarkdown}</div>
+                        <div class="post-body">${html}</div>
                     `;
-                    console.log(parseMarkdown)
-
                     requestAnimationFrame(() => requestAnimationFrame(() => {
                         postContainer.style.transition = "opacity 0.35s ease";
                         postContainer.style.opacity = "1";

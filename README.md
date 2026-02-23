@@ -58,11 +58,11 @@ foundry/
 ```
 
 ## Features
-- **Projects page** - fetches all public GitHub repos, displays the latest commits per repo, and shows language breakdowns with byte counts and estimated LOC.
-- **Gallery** - pulls images directly from `assets/images/` in the repo via GitHub contents API. Full lightbox with keyboard and swipe navigation, metadata panel, and commit date lookup per image.
-- **Blog** - reads post metadata from `blog/posts/index.json` and renders compiled HTML posts. Supports tags, excerpts, and a full post reader view.
-- **Contact form** - backed by Formspree with loading/success/error states.
-- **Image compressor** - `assets/images/image_compressor.py` batch-compresses images in-place using Pillow (JPEG quality 82, max 1920x1920, PNG compress level 9)
+- Projects page - fetches all public GitHub repos, displays the latest commits per repo, and shows language breakdowns with byte counts and estimated LOC.
+- Gallery - pulls images directly from `assets/images/` in the repo via GitHub contents API. Full lightbox with keyboard and swipe navigation with a metadata panel per image.
+- Blog - reads post metadata from `blog/posts/index.json` and renders compiled HTML posts. Supports tags, excerpts, and a full post reader view.
+- Contact form - backed by Formspree.
+- Image compressor - `assets/images/image_compressor.py` batch-compresses images in-place using Pillow (JPEG quality 82, max 1920x1920)
 
 ## Blog Pipeline
 Blog posts are written in Markdown and compiled to HTML using [Anvil](https://github.com/Jdrc6000/Anvil) - my own Markdown compiler.

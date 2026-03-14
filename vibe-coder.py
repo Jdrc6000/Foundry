@@ -1,6 +1,6 @@
 from pathlib import Path
 
-main_path = Path("/Users/joshuacarter/Desktop/Coding/Code Vault/projects/foundry")
+main_path = Path(__file__).parent
 txt_path = main_path / "vibe-coded.txt"
 
 full = ""

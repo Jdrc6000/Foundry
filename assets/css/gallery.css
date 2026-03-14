@@ -1,5 +1,3 @@
-/* ── Gallery page styles ── */
-
 .gallery-header {
     margin-bottom: 2rem;
     border-bottom: 1px solid #e0e0e0;
@@ -18,7 +16,6 @@
     margin: 0;
 }
 
-/* Grid */
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -75,7 +72,6 @@
     opacity: 1;
 }
 
-/* Lightbox */
 .lightbox {
     display: none;
     position: fixed;
@@ -145,7 +141,6 @@
     transition: opacity 0.2s ease;
 }
 
-/* Metadata panel */
 .lightbox-meta {
     width: 260px;
     flex-shrink: 0;
@@ -190,7 +185,6 @@
     color: #ccc;
 }
 
-/* Nav buttons */
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
@@ -236,7 +230,6 @@
     font-size: 1.8rem;
 }
 
-/* Loading skeleton */
 .photo-skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
     background-size: 200% 100%;
@@ -256,7 +249,6 @@
     }
 }
 
-/* Responsive */
 @media (max-width: 680px) {
     .lightbox-inner {
         flex-direction: column;

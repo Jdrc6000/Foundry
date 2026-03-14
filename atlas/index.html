@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas - Foundry</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/atlas.css">
+</head>
+
+<body>
+    <header>
+        <h1>Atlas</h1>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../projects/index.html">Projects</a>
+            <a href="../blog/index.html">Blog</a>
+            <a href="../gallery/index.html">Gallery</a>
+            <a href="../about.html">About</a>
+            <a href="../contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="atlas-header">
+            <div class="atlas-header-text">
+                <div class="atlas-badge-row">
+                    <span class="atlas-badge">i686 / x86</span>
+                    <span class="atlas-badge">Bare Metal</span>
+                    <span class="atlas-badge">Monolithic Kernel</span>
+                    <span class="atlas-badge">C + NASM</span>
+                </div>
+                <h2 class="atlas-title">Atlas OS</h2>
+                <p class="atlas-tagline">A hobby operating system built from scratch in two weekends.</p>
+            </div>
+            <div class="atlas-header-links">
+                <a class="atlas-btn" href="https://github.com/Jdrc6000/atlas" target="_blank" rel="noopener">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+
+        <!-- Terminal mockup -->
+        <div class="atlas-terminal">
+            <div class="atlas-terminal-bar">
+                <span class="atlas-terminal-dot atlas-terminal-dot--red"></span>
+                <span class="atlas-terminal-dot atlas-terminal-dot--yellow"></span>
+                <span class="atlas-terminal-dot atlas-terminal-dot--green"></span>
+                <span class="atlas-terminal-title">atlas — tty0</span>
+            </div>
+            <div class="atlas-terminal-body">
+                <div class="atlas-terminal-line"><span class="atlas-t-white">Atlas OS</span></div>
+                <div class="atlas-terminal-line atlas-terminal-line--blank"></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">atlas :~$ </span><span> help</span></div>
+                <div class="atlas-terminal-line"><span>available commands:</span></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;clear - Clear the screen</span>
+                </div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;echo - Print arguments</span>
+                </div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;help - List all commands</span>
+                </div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;uptime - Show time since
+                        boot</span></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;mem - Show bytes in heap</span>
+                </div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;date - Show current date and
+                        time</span></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;beep - Beep the speaker (freq hz,
+                        duration ms)</span></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;ps - List tasks</span></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">&nbsp;&nbsp;kill - Kill a task by PID</span>
+                </div>
+                <div class="atlas-terminal-line atlas-terminal-line--blank"></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">atlas :~$ </span><span> uptime</span></div>
+                <div class="atlas-terminal-line"><span>uptime: 0h 0m 7s</span></div>
+                <div class="atlas-terminal-line atlas-terminal-line--blank"></div>
+                <div class="atlas-terminal-line"><span class="atlas-t-dim">atlas :~$ </span><span class="atlas-t-cursor"></span></div>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="atlas-section">
+            <h3 class="atlas-section-title">Overview</h3>
+            <div class="atlas-bio-card">
+                <p>Atlas is a monolithic, bare-metal operating system targeting i686 (x86 protected mode), built as a hands-on dive into low-level systems programming. It has no dependencies - no
+                    libc, no GRUB, no external libraries of any kind. It ships its own 512-byte bootloader written in
+                    NASM that loads the kernel off disk via BIOS INT 13h, sets up a GDT, switches the CPU into 32-bit
+                    protected mode, and jumps to the kernel.</p>
+                <p>From there a monolithic C kernel takes over: it initialises paging, a physical memory manager, the
+                    IDT, the PIC, a PIT-driven tick counter, a PS/2 keyboard driver, a heap allocator, a round-robin
+                    task scheduler, and an RTC reader — then drops you into an interactive shell. Everything from
+                    <code>memset</code> to <code>printf</code>-style output is implemented from scratch in
+                    <code>kstring.c</code> and <code>vga.c</code>.</p>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="atlas-section">
+            <h3 class="atlas-section-title">Features</h3>
+            <div class="atlas-features-grid">
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>Custom Bootloader</h4>
+                        <p>A hand-written 512-byte x86 bootloader in NASM. Loads 64 sectors from disk via BIOS INT 13h
+                            into <code>0x1000</code>, sets up a GDT, switches to 32-bit protected mode, and jumps
+                            directly to the kernel — no GRUB involved.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>VGA Text Console</h4>
+                        <p>Direct memory-mapped I/O to <code>0xB8000</code>. Supports newlines, backspace,
+                            forward-delete, hardware cursor sync via ports <code>0x3D4</code>/<code>0x3D5</code>, and
+                            automatic scrolling when the screen fills.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>Memory Management</h4>
+                        <p>A bitmap-based PMM managing 16 MB of RAM in 4 KB pages, with free pages starting at 2 MB to
+                            avoid stomping the kernel. A VMM handles page table walk, mapping, unmapping, and physical
+                            address resolution. The heap uses a first-fit linked-list allocator with block splitting and
+                            coalescing on free.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>IDT, PIC &amp; IRQ Handling</h4>
+                        <p>256-entry IDT with ISR stubs in NASM. The 8259 PIC is remapped to vectors
+                            <code>0x20</code>–<code>0x2F</code> to avoid conflicts with CPU exceptions. IRQ0 (PIT at
+                            1000 Hz) drives the tick counter and task scheduler; IRQ1 services the PS/2 keyboard.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="4 17 10 11 4 5" />
+                            <line x1="12" y1="19" x2="20" y2="19" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>Shell</h4>
+                        <p>Interactive shell with a command registry, argument parsing, inline cursor movement,
+                            backspace, forward-delete, and a 16-entry history navigable with arrow keys. Built-in
+                            commands: <code>clear</code>, <code>echo</code>, <code>help</code>, <code>uptime</code>,
+                            <code>mem</code>, <code>date</code>, <code>beep</code>, <code>ps</code>, <code>kill</code>,
+                            <code>pmm</code>, <code>vmm</code>.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>Preemptive Task Scheduler</h4>
+                        <p>Up to 8 tasks with IRQ0-driven round-robin scheduling. Context switching is done in NASM:
+                            <code>pusha</code> saves registers onto the stack, the current ESP is passed to
+                            <code>task_schedule()</code>, and the returned ESP of the next ready task is restored with
+                            <code>popa</code>/<code>iret</code>. Tasks can sleep with <code>task_sleep(ms)</code> and be
+                            killed by PID.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="6" width="20" height="12" rx="2" />
+                            <path d="M6 12h.01M10 12h.01" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>PS/2 Keyboard</h4>
+                        <p>IRQ1-driven driver with a full scancode-to-ASCII map, Shift and Caps Lock handling, and
+                            extended scancode (<code>0xE0</code>) support for arrow keys and Delete. Characters are
+                            pushed into a 64-byte ring buffer and consumed by the shell's input loop.</p>
+                    </div>
+                </div>
+                <div class="atlas-feature-card">
+                    <div class="atlas-feature-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="18" cy="16" r="3" />
+                        </svg>
+                    </div>
+                    <div class="atlas-feature-body">
+                        <h4>PC Speaker &amp; RTC</h4>
+                        <p>PIT channel 2 drives the PC speaker for arbitrary-frequency beeps via
+                            <code>beep &lt;hz&gt; &lt;ms&gt;</code>. The CMOS RTC is read directly over I/O ports
+                            <code>0x70</code>/<code>0x71</code> to get the current date and time, with BCD-to-binary
+                            conversion handled in kernel space.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture -->
+        <div class="atlas-section">
+            <h3 class="atlas-section-title">Architecture</h3>
+            <div class="atlas-arch-grid">
+                <div class="atlas-arch-layer atlas-arch-layer--top">
+                    <span class="atlas-arch-label">Shell + Commands</span>
+                    <span class="atlas-arch-desc">clear · echo · help · uptime · mem · date · beep · ps · kill</span>
+                </div>
+                <div class="atlas-arch-arrow">↓</div>
+                <div class="atlas-arch-layer">
+                    <span class="atlas-arch-label">Kernel Core</span>
+                    <span class="atlas-arch-desc">VGA console · kmalloc · kstring · task scheduler · RTC</span>
+                </div>
+                <div class="atlas-arch-arrow">↓</div>
+                <div class="atlas-arch-layer">
+                    <span class="atlas-arch-label">Memory Subsystem</span>
+                    <span class="atlas-arch-desc">PMM (bitmap, 16 MB) · VMM (page tables) · paging</span>
+                </div>
+                <div class="atlas-arch-arrow">↓</div>
+                <div class="atlas-arch-layer">
+                    <span class="atlas-arch-label">Interrupt Layer</span>
+                    <span class="atlas-arch-desc">IDT (256 entries) · 8259 PIC · IRQ0 PIT 1 kHz · IRQ1 PS/2</span>
+                </div>
+                <div class="atlas-arch-arrow">↓</div>
+                <div class="atlas-arch-layer atlas-arch-layer--bottom">
+                    <span class="atlas-arch-label">Custom Bootloader → i686 Hardware / QEMU</span>
+                    <span class="atlas-arch-desc">boot.asm · GDT · protected mode · BIOS INT 13h · os.img</span>
+                </div>
+            </div>
+            <div class="atlas-bio-card atlas-bio-card--mt">
+                <p>Atlas is a <strong>monolithic kernel</strong> — every subsystem runs in ring 0 with a flat address
+                    space. The kernel is linked to <code>0x1000</code> by <code>linker.ld</code> and output as a raw
+                    binary (no ELF, no multiboot). The Makefile <code>cat</code>s the bootloader binary and kernel
+                    binary together into a single <code>build/os.img</code> that QEMU or <code>dd</code> can boot
+                    directly.</p>
+                <p>The heap lives past the kernel's <code>.bss</code> section (aligned to 4 KB by the linker script),
+                    with its start address exported as <code>heap_start</code>. All string and memory utilities —
+                    <code>kstrcmp</code>, <code>kmemset</code>, <code>kmemcpy</code>, and friends — are in
+                    <code>kstring.c</code>. There is no libc anywhere in the build.</p>
+            </div>
+        </div>
+
+        <!-- Build & Run -->
+        <div class="atlas-section">
+            <h3 class="atlas-section-title">Build &amp; Run</h3>
+            <div class="atlas-bio-card">
+                <p>Atlas builds with a cross-compiler targeting <code>i686-elf</code> and runs in QEMU or on real x86
+                    hardware. You'll need <code>nasm</code>, <code>i686-elf-gcc</code>, <code>i686-elf-ld</code>, and
+                    <code>qemu-system-i386</code>. The QEMU invocation enables PC speaker output via CoreAudio on macOS.
+                </p>
+            </div>
+            <div class="atlas-steps">
+                <div class="atlas-step">
+                    <div class="atlas-step-num">1</div>
+                    <div class="atlas-step-body">
+                        <h4>Clone the repo</h4>
+                        <div class="atlas-code-block">
+                            <pre><code>git clone https://github.com/Jdrc6000/atlas.git
+cd atlas</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="atlas-step">
+                    <div class="atlas-step-num">2</div>
+                    <div class="atlas-step-body">
+                        <h4>Build</h4>
+                        <div class="atlas-code-block">
+                            <pre><code>make</code></pre>
+                        </div>
+                        <p class="atlas-step-note">Assembles <code>boot/boot.asm</code> to a flat binary, compiles all C
+                            and NASM kernel sources with <code>i686-elf-gcc</code>, links with <code>linker.ld</code>
+                            into <code>build/kernel.bin</code>, then concatenates bootloader + kernel into
+                            <code>build/os.img</code>.</p>
+                    </div>
+                </div>
+                <div class="atlas-step">
+                    <div class="atlas-step-num">3</div>
+                    <div class="atlas-step-body">
+                        <h4>Run in QEMU</h4>
+                        <div class="atlas-code-block">
+                            <pre><code>make run</code></pre>
+                        </div>
+                        <p class="atlas-step-note">Boots <code>build/os.img</code> in <code>qemu-system-i386</code> as a
+                            raw disk image with PC speaker support. The <code>beep</code> command produces real audio on
+                            macOS.</p>
+                    </div>
+                </div>
+                <div class="atlas-step">
+                    <div class="atlas-step-num">4</div>
+                    <div class="atlas-step-body">
+                        <h4>Write to real hardware (optional)</h4>
+                        <div class="atlas-code-block">
+                            <pre><code>dd if=build/os.img of=/dev/sdX bs=512 status=progress</code></pre>
+                        </div>
+                        <p class="atlas-step-note">Replace <code>/dev/sdX</code> with your USB drive. The image is a raw
+                            disk — no partition table, no filesystem — so any x86 machine will boot it directly from
+                            BIOS.</p>
+                    </div>
+                </div>
+                <div class="atlas-step">
+                    <div class="atlas-step-num">5</div>
+                    <div class="atlas-step-body">
+                        <h4>Clean</h4>
+                        <div class="atlas-code-block">
+                            <pre><code>make clean</code></pre>
+                        </div>
+                        <p class="atlas-step-note">Removes the <code>build/</code> directory entirely.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Foundry</p>
+    </footer>
+</body>
+
+</html>
